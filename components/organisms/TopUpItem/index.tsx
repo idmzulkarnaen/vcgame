@@ -1,5 +1,5 @@
-interface TopUpItemProps{
-    type: 'desktop' |'mobile'
+interface TopUpItemProps {
+  type: "desktop" | "mobile";
 }
 export default function TopUpItem(props: TopUpItemProps) {
   const { type } = props;
