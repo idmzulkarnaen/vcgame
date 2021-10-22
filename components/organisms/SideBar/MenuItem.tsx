@@ -1,19 +1,22 @@
 import Image from "next/image";
+import Link from "next/link";
 const cx = require('classnames');
 
 interface MenuItemProps {
   title: string;
   icon: 'Ic-Menu-Overview' | 'Ic-Menu-Transaction' | 'Ic-Menu-Messages' | 'Ic-Menu-Card' | 'Ic-Menu-Reward' | 'Ic-Menu-Setting' | 'Ic-Menu-Logout';
   active?: boolean;
+  href: string;
 }
 
 export default function MenuItem(props: Partial<MenuItemProps>) {
-  const { title, icon, active } = props;
+  const { title, icon, active, href } = props;
   const classItem = cx({
-      'item':true,
-      'mb-30':true,
-      'active':active
-  })
+      item: true,
+      'mb-30': true,
+      active,
+  });
+
   return (
     <div className={classItem}>
       <div className="me-3">
@@ -21,9 +24,9 @@ export default function MenuItem(props: Partial<MenuItemProps>) {
       </div>
 
       <p className="item-title m-0">
-        <a href="" className="text-lg text-decoration-none">
-          {title}
-        </a>
+        <Link href={href}>          
+        <a className="text-lg text-decoration-none">{title}</a>
+        </Link>
       </p>
     </div>
   );
