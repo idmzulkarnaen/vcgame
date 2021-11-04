@@ -18,8 +18,8 @@ export default function SignUpForm() {
       name,
       password,
     };
-    localStorage.setItem('user-form', JSON.stringify(userForm));
-    router.push('/sign-up-photo');
+    localStorage.setItem("user-form", JSON.stringify(userForm));
+    router.push("/sign-up-photo");
   };
   return (
     <>
