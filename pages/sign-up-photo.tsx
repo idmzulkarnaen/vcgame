@@ -2,6 +2,9 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { setSignUp } from "../services/auth";
 import { getGameCategory } from "../services/player";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from "next/router";
 
 export default function SignUpPhoto() {
   const [categories, setCategories] = useState([]);
@@ -12,6 +15,8 @@ export default function SignUpPhoto() {
     name: "",
     email: "",
   });
+
+  const router = useRouter();
 
   const getGameCategoryAPI = useCallback(async () => {
     const data = await getGameCategory();
@@ -46,7 +51,15 @@ export default function SignUpPhoto() {
     data.append("favorite", favorite);
 
     const result = await setSignUp(data);
-    console.log("result: ", result);
+    if (result.error ===1) {
+      toast.error(result.message);
+    } else {
+      toast.success('Register Berhasil');
+      router.push('/sign-up-success');
+      // [CODE UPDATE] di tutorial saya simpan remove user-form disini,
+      // saya rubah remove nya menjadi di halaman setelahnya.
+      localStorage.removeItem('user-form');
+    }
   };
   return (
     <section className="sign-up-photo mx-auto pt-lg-227 pb-lg-227 pt-130 pb-50">
@@ -80,7 +93,6 @@ export default function SignUpPhoto() {
                     name="avatar"
                     accept="image/png, image/jpeg"
                     onChange={(event) => {
-                      console.log(event.target.files);
                       const img = event.target.files![0];
                       setImagePreview(URL.createObjectURL(img));
                       return setImage(img);
@@ -136,6 +148,7 @@ export default function SignUpPhoto() {
             </div>
           </div>
         </form>
+        <ToastContainer />
       </div>
     </section>
   );
