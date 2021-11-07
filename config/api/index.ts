@@ -21,5 +21,5 @@ export default async function callAPI ({url, method, data}: AxiosRequestConfig )
         message:'success',
         data: response.data.data
     }
-    return callAPI
+    return res;
 }
