@@ -20,7 +20,7 @@ export default function Auth() {
       const payload: JWTPayloadTypes = jwtDecode(jwtToken);
       const userFromPayload: UserTypes = payload.player;
       const IMG = process.env.NEXT_PUBLIC_IMG;
-      user.avatar = `${IMG}/${userFromPayload.avatar}`;
+      userFromPayload.avatar = `${IMG}/${userFromPayload.avatar}`;
       setIsLogin(true);
       setUser(userFromPayload);
     }
