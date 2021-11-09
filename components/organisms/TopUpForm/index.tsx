@@ -32,8 +32,8 @@ export default function TopUpForm(props: TopUpFormProps) {
   
   const onSubmit = () => {
     if (verifyID === '' || bankAccountName === '' || nominalItem === {} || paymentItem === {}) {
-      // toast.error('silahkan isi semua data!!!');
-      alert("silahkan isi semua data");
+      toast.error('silahkan isi semua data!!!');
+      // alert("silahkan isi semua data");
     } else {
       const data = {
         verifyID,
