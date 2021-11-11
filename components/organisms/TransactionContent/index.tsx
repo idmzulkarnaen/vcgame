@@ -4,6 +4,7 @@ import NumberFormat from 'react-number-format';
 import { getMemberTransactions } from "../../../services/member";
 import ButtonTab from "./ButtonTab";
 import TableRow from "./TableRow";
+import { HistoryTransactionTypes } from "../../../services/data-types";
 
 export default function TransactionContent() {
   const [total, setTotal] = useState(0);
@@ -85,6 +86,7 @@ export default function TransactionContent() {
                     item={`${transaction.historyVoucherTopup.coinQuantity} ${transaction.historyVoucherTopup.coinName}`}
                     price={transaction.value}
                     status={transaction.status}
+                    id={transaction._id}
                   />
                 ))}
                 
