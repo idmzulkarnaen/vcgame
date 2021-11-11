@@ -1,7 +1,27 @@
+import jwtDecode from 'jwt-decode';
+import Cookies from 'js-cookie';
+import { useEffect, useState } from "react";
 import Input from "../../components/atoms/Input";
 import SideBar from "../../components/organisms/SideBar";
+import { JWTPayloadTypes, UserTypes } from '../../services/data-types';
 
 export default function EditProfile() {
+  const [user, setUser] = useState({
+    id: '',
+    name: '',
+    email: '',
+    avatar: '',
+  });
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (token) {
+      const jwtToken = atob(token);
+      const payload: JWTPayloadTypes = jwtDecode(jwtToken);
+      const userFromPayload: UserTypes = payload.player;
+      setUser(userFromPayload);
+    }
+  }, []);
   return (
     <section className="edit-profile overflow-auto">
       <SideBar activeMenu="settings" />
@@ -11,20 +31,10 @@ export default function EditProfile() {
           <div className="bg-card pt-30 ps-30 pe-30 pb-30">
             <form action="">
               <div className="photo d-flex">
-                <div className="position-relative me-20">
-                  <img
-                    src="/img/avatar-1.png"
-                    width="90"
-                    height="90"
-                    className="avatar img-fluid"
-                  />
-                  <div className="avatar-overlay position-absolute top-0 d-flex justify-content-center align-items-center">
-                    <img src="/icon/upload.svg" alt="icon upload" width={90} height={90} />
-                  </div>
-                </div>
+                
                 <div className="image-upload">
                   <label htmlFor="avatar">
-                    <img src="/icon/upload.svg" alt="icon upload" width={90} height={90} />
+                    <img src={user.avatar} alt="icon upload" width={90} height={90} style={{ borderRadius: '100%' }} />
                   </label>
                   <input
                     id="avatar"
@@ -35,14 +45,14 @@ export default function EditProfile() {
                 </div>
               </div>
               <div className="pt-30">
-                <Input label="Full Name" />
+                <Input label="Full Name" value={user.userName} />
               </div>
               <div className="pt-30">
-                <Input label="Email Address" />
+                <Input label="Email Address" disabled value={user.email} />
               </div>
-              <div className="pt-30">
+              {/* <div className="pt-30">
                 <Input label="Phone" />
-              </div>
+              </div> */}
               <div className="button-group d-flex flex-column pt-50">
                 <button
                   type="submit"
