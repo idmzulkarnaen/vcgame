@@ -1,27 +1,37 @@
-import jwtDecode from 'jwt-decode';
-import Cookies from 'js-cookie';
+import jwtDecode from "jwt-decode";
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 import Input from "../../components/atoms/Input";
 import SideBar from "../../components/organisms/SideBar";
-import { JWTPayloadTypes, UserTypes } from '../../services/data-types';
+import { JWTPayloadTypes, UserTypes } from "../../services/data-types";
 
 export default function EditProfile() {
   const [user, setUser] = useState({
-    id: '',
-    name: '',
-    email: '',
-    avatar: '',
+    id: "",
+    name: "",
+    email: "",
+    avatar: "",
   });
 
+  
+
+  const [imagePreview, setImagePreview] = useState('/');
+
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     if (token) {
       const jwtToken = atob(token);
       const payload: JWTPayloadTypes = jwtDecode(jwtToken);
       const userFromPayload: UserTypes = payload.player;
       setUser(userFromPayload);
     }
+
   }, []);
+
+  const onSubmit =  () => {
+    console.log('data', user);
+  };
   return (
     <section className="edit-profile overflow-auto">
       <SideBar activeMenu="settings" />
@@ -31,21 +41,41 @@ export default function EditProfile() {
           <div className="bg-card pt-30 ps-30 pe-30 pb-30">
             <form action="">
               <div className="photo d-flex">
-                
                 <div className="image-upload">
                   <label htmlFor="avatar">
-                    <img src={user.avatar} alt="icon upload" width={90} height={90} style={{ borderRadius: '100%' }} />
+                    {imagePreview === '/' ? (
+                      <img src={user.avatar} alt="icon upload" width={90} height={90} style={{ borderRadius: '100%' }} />
+                    ) : (
+                      <img src={imagePreview} alt="icon upload" width={90} height={90} style={{ borderRadius: '100%' }} />
+                    )}
                   </label>
                   <input
                     id="avatar"
                     type="file"
                     name="avatar"
                     accept="image/png, image/jpeg"
+                    onChange={(event) => {
+                      const img = event.target.files![0];
+                      setImagePreview(URL.createObjectURL(img));
+                      return setUser({
+                        ...user,
+                        avatar: img,
+                      });
+                    }}
                   />
                 </div>
               </div>
               <div className="pt-30">
-                <Input label="Full Name" value={user.userName} />
+                <Input
+                  label="Full Name"
+                  value={user.username}
+                  onChange={(event) =>
+                    setUser({
+                      ...user,
+                      name: event.target.value,
+                    })
+                  }
+                />
               </div>
               <div className="pt-30">
                 <Input label="Email Address" disabled value={user.email} />
@@ -55,9 +85,10 @@ export default function EditProfile() {
               </div> */}
               <div className="button-group d-flex flex-column pt-50">
                 <button
-                  type="submit"
+                  type="button"
                   className="btn btn-save fw-medium text-lg text-white rounded-pill"
                   role="button"
+                  onClick={onSubmit}
                 >
                   Save My Profile
                 </button>
