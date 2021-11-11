@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import Input from "../../components/atoms/Input";
 import SideBar from "../../components/organisms/SideBar";
 import { JWTPayloadTypes, UserTypes } from "../../services/data-types";
@@ -14,9 +14,7 @@ export default function EditProfile() {
     avatar: "",
   });
 
-  
-
-  const [imagePreview, setImagePreview] = useState('/');
+  const [imagePreview, setImagePreview] = useState("/");
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -26,11 +24,10 @@ export default function EditProfile() {
       const userFromPayload: UserTypes = payload.player;
       setUser(userFromPayload);
     }
-
   }, []);
 
-  const onSubmit =  () => {
-    console.log('data', user);
+  const onSubmit = () => {
+    console.log("data", user);
   };
   return (
     <section className="edit-profile overflow-auto">
@@ -43,10 +40,22 @@ export default function EditProfile() {
               <div className="photo d-flex">
                 <div className="image-upload">
                   <label htmlFor="avatar">
-                    {imagePreview === '/' ? (
-                      <img src={user.avatar} alt="icon upload" width={90} height={90} style={{ borderRadius: '100%' }} />
+                    {imagePreview === "/" ? (
+                      <img
+                        src={user.avatar}
+                        alt="icon upload"
+                        width={90}
+                        height={90}
+                        style={{ borderRadius: "100%" }}
+                      />
                     ) : (
-                      <img src={imagePreview} alt="icon upload" width={90} height={90} style={{ borderRadius: '100%' }} />
+                      <img
+                        src={imagePreview}
+                        alt="icon upload"
+                        width={90}
+                        height={90}
+                        style={{ borderRadius: "100%" }}
+                      />
                     )}
                   </label>
                   <input
@@ -72,7 +81,7 @@ export default function EditProfile() {
                   onChange={(event) =>
                     setUser({
                       ...user,
-                      name: event.target.value,
+                      username: event.target.value,
                     })
                   }
                 />
