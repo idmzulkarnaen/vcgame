@@ -2,12 +2,20 @@ import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from 'next/router';
 import Input from "../../components/atoms/Input";
 import SideBar from "../../components/organisms/SideBar";
 import { JWTPayloadTypes, UserTypes } from "../../services/data-types";
+import { updateProfile } from "../../services/member";
 
+interface UserStateTypes {
+  id: string;
+  name: string;
+  email: string;
+  avatar: any;
+}
 export default function EditProfile() {
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<UserStateTypes>({
     id: "",
     name: "",
     email: "",
@@ -15,7 +23,8 @@ export default function EditProfile() {
   });
 
   const [imagePreview, setImagePreview] = useState("/");
-
+  const router = useRouter();
+  
   useEffect(() => {
     const token = Cookies.get("token");
     if (token) {
@@ -26,9 +35,22 @@ export default function EditProfile() {
     }
   }, []);
 
-  const onSubmit = () => {
-    console.log("data", user);
+  const onSubmit = async () => {
+    // console.log("data", user);
+    const data = new FormData();
+
+    data.append('image', user.avatar);
+    data.append('name', user.name);
+    const response = await updateProfile(data, user.id);
+    
+    if (response.error) {
+      toast.error(response.message);
+    } else {
+      Cookies.remove('token');
+      router.push('/sign-in');
+    }
   };
+  
   return (
     <section className="edit-profile overflow-auto">
       <SideBar activeMenu="settings" />
@@ -77,11 +99,11 @@ export default function EditProfile() {
               <div className="pt-30">
                 <Input
                   label="Full Name"
-                  value={user.username}
+                  value={user.name}
                   onChange={(event) =>
                     setUser({
                       ...user,
-                      username: event.target.value,
+                      name: event.target.value,
                     })
                   }
                 />

@@ -31,14 +31,17 @@ export default async function callAPI ({
         headers,
     }).catch(err => err.response);
     
-    if (response.status >300 ) {
+    
+    if (response.status > 300 ) {
         const res={
             error: true,
             message: response.data.message,
             data: null
         }
         return res;
+        
     }
+    
     
     const {length} = Object.keys(response.data);
     const res={
