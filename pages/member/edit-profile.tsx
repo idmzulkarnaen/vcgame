@@ -10,14 +10,14 @@ import { updateProfile } from "../../services/member";
 
 interface UserStateTypes {
   id: string;
-  name: string;
+  username: string;
   email: string;
   avatar: any;
 }
 export default function EditProfile() {
   const [user, setUser] = useState<UserStateTypes>({
     id: "",
-    name: "",
+    username: "",
     email: "",
     avatar: "",
   });
@@ -36,11 +36,11 @@ export default function EditProfile() {
   }, []);
 
   const onSubmit = async () => {
-    // console.log("data", user);
+    console.log("data", user);
     const data = new FormData();
 
     data.append('image', user.avatar);
-    data.append('name', user.name);
+    data.append('username', user.username);
     const response = await updateProfile(data, user.id);
     
     if (response.error) {
@@ -99,11 +99,11 @@ export default function EditProfile() {
               <div className="pt-30">
                 <Input
                   label="Full Name"
-                  value={user.name}
+                  value={user.username}
                   onChange={(event) =>
                     setUser({
                       ...user,
-                      name: event.target.value,
+                      username: event.target.value,
                     })
                   }
                 />
@@ -118,7 +118,6 @@ export default function EditProfile() {
                 <button
                   type="button"
                   className="btn btn-save fw-medium text-lg text-white rounded-pill"
-                  role="button"
                   onClick={onSubmit}
                 >
                   Save My Profile

@@ -4,12 +4,13 @@ import { useRouter } from "next/router";
 import { setSignUp } from "../services/auth";
 import { getGameCategory } from "../services/player";
 import { toast } from 'react-toastify';
+import { CategoryTypes } from "../services/data-types";
 
 export default function SignUpPhoto() {
   const [categories, setCategories] = useState([]);
   const [favorite, setFavorite] = useState("");
-  const [image, setImage] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
+  const [image, setImage] = useState<any>("");
+  const [imagePreview, setImagePreview] = useState<any>(null);
   const [localForm, setLocalForm] = useState({
     name: "",
     email: "",
@@ -33,8 +34,8 @@ export default function SignUpPhoto() {
   }, []);
 
   const onSubmit = async () => {
-    console.log("favorite: ", favorite);
-    console.log("image: ", image);
+    // console.log("favorite: ", favorite);
+    // console.log("image: ", image);
     const getLocalForm = await localStorage.getItem("user-form");
     const form = JSON.parse(getLocalForm!);
     const data = new FormData();
@@ -120,7 +121,7 @@ export default function SignUpPhoto() {
                   value={favorite}
                   onChange={(event) => setFavorite(event.target.value)}
                 >
-                  {categories.map((category) => (
+                  {categories.map((category: CategoryTypes) => (
                     <option key={category._id} value={category._id} selected>
                       {category.name}
                     </option>
